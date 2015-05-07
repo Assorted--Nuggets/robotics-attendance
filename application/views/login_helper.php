@@ -1,5 +1,5 @@
 <?php
-    echo form_open('users/login','');
+    echo form_open('users/admin_login','');
     $data = array(
         'name' => 'password',
         'id' => 'password',
