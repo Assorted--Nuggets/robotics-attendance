@@ -28,4 +28,7 @@
     echo form_input($pin_number,'','');
     echo form_input($submit,'','');
     echo form_close();
+    echo form_open('users','');
+    echo "<button type = 'submit' class = 'btn'>Back to Login</button";
+    echo form_close();
 ?>

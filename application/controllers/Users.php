@@ -11,7 +11,7 @@
     {
       $this->load->helper('form');
       $this->load->view('clockin_helper');
-    } 
+    }
     public function clock_in()
     {
       $password = $this->input->post('clock_password');
@@ -22,19 +22,14 @@
       if($this->database->user_exists($password))
       {
         $this->database->authenticate_clock($password);
-        if($this->database->is_clock_in($this->database->get_id($password)))
-        {
-        }
-        else
-        {
-        }
+        $this->database->is_clock_in($this->database->get_id($password));
       }
       else
       {
         echo "Incorrect PIN";
       }
     }
-    
+
     public function create_user()
     {
       $first_name = $this->input->post('first_name');
@@ -48,14 +43,14 @@
         $this->database->add_user($first_name, $last_name, $pin_number);
       }
     }
- 
+
     public function admin_login()
     {
       $password = $this->input->post('password');
       $this->load->helper('form');
       $this->load->view('login_helper');
       $this->database->admin_login($password);
-    } 
+    }
 
     public function view($id)
     {
@@ -63,4 +58,3 @@
     }
   }
 ?>
-

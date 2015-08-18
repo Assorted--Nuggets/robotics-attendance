@@ -98,7 +98,13 @@
         'placeholder' => 'Lunch PIN'
         );
     echo form_input($data,'','');
+    echo "<br>";
     echo "<button type='submit' class ='btn'>Clock In</button>";
+    echo form_close();
+    
+
+    echo form_open('users/create_user','');
+    echo "<button type = 'submit' class = 'btn'>Register</button";
     echo form_close();
     echo "</div>";
 ?>
