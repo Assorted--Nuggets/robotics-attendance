@@ -138,6 +138,11 @@
       $query3 = $this->db->get_where('clocks', array('user_id' => $id));
       $clock_array = $query3->result_array();
       $size = count($clock_array);
+     
+      $return_temp_time = "";
+      $return_total_time = "";
+      $return_forgot = FALSE;
+      $return_first = FALSE;
       if($size == 0)
       {
         $data = array(
@@ -146,10 +151,8 @@
           'time_stamp' => date('Y-m-d H:i:s'),
           'clock_in' => TRUE
         );
+        $return_first = TRUE; 
         $this->db->insert('clocks', $data);
-        echo $this->get_name($pin_number);
-        echo " Has signed in for the first time <br>";
-        echo "Welcome to the Team!";
         return;
       }
       $result = $clock_array[$size-1];
@@ -170,22 +173,16 @@
 
         $time_a = strtotime($result['time_stamp']);
         $time_b = strtotime(date('Y-m-d H:i:s'));
-        echo $this->get_name($pin_number);
         //echo $difference->format('%i')/60;
-        echo " has signed out<br>";
-        echo "<br>";
         if(abs($time_b-$time_a)/60/60 > 16)
         {
-          echo "You forgot to sign out<br>";
-          echo "You will not be credited<br>";
-          echo "You have been automatically signed in";
+          $return_forgot = TRUE;
           $data['clock_in'] = TRUE;
           $this->db->insert('clocks', $data);
           return;
         }
-        echo "Time: ";
         //Display how long the user has been signed in
-        echo $current->diff($time)->format('%H hours %i minutes %s seconds');
+	$return_temp_time=$current->diff($time)->format('%H hours %i minutes %s seconds');
         $totalTime = new DateTime("0-0-0 0:0:0");
         for($i = 1; $i < $size; ++$i)
         {
@@ -200,15 +197,20 @@
           }
         }
         $totalTime->add($current->diff($time));
-        echo "<br>Total Time: ";
-        echo $totalTime->format('H:i:s');
+        
+        $return_total_time = $totalTime->format('H:i:s');
       }
-      else
-      {
-        echo $this->get_name($pin_number);
-        echo " has signed in<br>";
-      }
+
+      $return_data = array(
+        'clock_in' => $this->is_clock_in($id),
+        'total' => $return_total_time,
+        'temp' => $return_temp_time,
+        'is_forgot' => $return_forgot,
+        'is_first' => $return_first,
+        'first_name' => $this->get_name($pin_number)
+      );
       $this->db->insert('clocks', $data);
+      return $return_data;
     }
 
     public function is_admin($pin_number)
