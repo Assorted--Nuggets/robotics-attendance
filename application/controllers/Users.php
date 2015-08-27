@@ -9,44 +9,22 @@
 
     public function index()
     {
-      $this->clock_in();
+      $this->auth_clock(TRUE);
     }
     public function clock_in()
     {
-      $trans_data;
-      $view_data = array
-      (
-        'first_flag' => TRUE
-      );
-      $trans_data['view_data'] = $view_data;
-
-      $this->load->helper('form');
-      $this->load->view('clockin_helper', $trans_data);
+      $this->auth_clock();
     }
 
-    public function auth_clock()
+    public function auth_clock($first = FALSE)
     {
-      $encapsulator;
       $password = $this->input->post('clock_password');
       $this->load->helper('form');
-      $view_data = array();
-      $data = array
-      (
-        'first_name' => $this->database->get_name($password),
-        'isclockin' => $this->database->is_clock_in($this->database->get_id($password)),
-        'exists' => $this->database->user_exists($password),
-        'first_flag' => FALSE
-      );
-
-      if($data['exists'] == TRUE)
-      {
-        $view_data = $this->database->authenticate_clock($password);
-        $view_data['exists'] = $data['exists'];
-        $view_data['first_flag'] = $data['first_flag'];
-      }
-      echo $view_data['return_total_time'];
-      $encapsulator['view_data'] = $view_data;
-      $this->load->view('clockin_helper', $encapsulator);
+      $testarr = $this->database->test_array();
+      $clockdata = $this->database->authenticate_clock($password);
+      $clockdata['first_flag'] = $first;
+      $data['clockdata'] = $clockdata;
+      $this->load->view('clockin_helper', $data);
     }
 
     public function create_user()

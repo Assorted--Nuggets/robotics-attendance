@@ -138,7 +138,7 @@
       $query3 = $this->db->get_where('clocks', array('user_id' => $id));
       $clock_array = $query3->result_array();
       $size = count($clock_array);
-     
+
       $return_temp_time = "";
       $return_total_time = "";
       $return_forgot = FALSE;
@@ -151,7 +151,7 @@
           'time_stamp' => date('Y-m-d H:i:s'),
           'clock_in' => TRUE
         );
-        $return_first = TRUE; 
+        $return_first = TRUE;
         $this->db->insert('clocks', $data);
         return;
       }
@@ -176,10 +176,21 @@
         //echo $difference->format('%i')/60;
         if(abs($time_b-$time_a)/60/60 > 16)
         {
-          $return_forgot = TRUE;
           $data['clock_in'] = TRUE;
           $this->db->insert('clocks', $data);
-          return;
+
+          $return_data = array(
+            'clock_in' => TRUE,
+            'total' => NULL,
+            'temp' => NULL,
+            'is_forgot' => TRUE,
+            'is_first' => FALSE,
+            'first_name' => $this->get_name($pin_number),
+            'first_flag' => TRUE,
+            'exists' => $this->user_exists($pin_number)
+          );
+
+          return $return_data;
         }
         //Display how long the user has been signed in
 	$return_temp_time=$current->diff($time)->format('%H hours %i minutes %s seconds');
@@ -197,7 +208,7 @@
           }
         }
         $totalTime->add($current->diff($time));
-        
+
         $return_total_time = $totalTime->format('H:i:s');
       }
 
@@ -207,9 +218,17 @@
         'temp' => $return_temp_time,
         'is_forgot' => $return_forgot,
         'is_first' => $return_first,
-        'first_name' => $this->get_name($pin_number)
+        'first_name' => $this->get_name($pin_number),
+        'first_flag' => FALSE,
+        'exists' => $this->user_exists($pin_number)
       );
       $this->db->insert('clocks', $data);
+      return $return_data;
+    }
+
+    public function test_array()
+    {
+      $return_data = array('test' => "REEEE");
       return $return_data;
     }
 
@@ -244,7 +263,7 @@
     {
       $this->load->library('session');
       $this->session->set_userdata(array('clock_password' => $pin_number));
-      $this->clock_in($this->session->userdata('clock_password'));
+      return $this->clock_in($this->session->userdata('clock_password'));
     }
 
     public function admin_login($pin_number)
