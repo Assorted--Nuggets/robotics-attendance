@@ -10,7 +10,8 @@
 
     $lastname = array(
         'name' => 'last_name',
-        'id' => 'last_name'
+        'id' => 'last_name',
+        'placeholder' => 'Last Name'
         );
  
     $pin_number = array(
