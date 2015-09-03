@@ -1,0 +1,95 @@
+body
+{
+    margin:0px;
+    background-color: #101010;
+}
+form
+{
+    width:50%;
+    margin:auto;
+}
+button
+{
+    width:100%;
+    margin:auto;
+    height:30px;
+}
+
+input
+{
+    width:100%;
+    height:30px;
+}
+h1
+{
+    padding:10px;
+    margin:0px;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+div.navbar h1
+{
+    text-align:left;
+}
+
+div.navbar
+{
+    margin-top:0px;
+    margin:0px;
+    width:100%;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#00b6ff+0,0026ff+100 */
+    background: #00b6ff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #0000FF 0%, #000099 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0000FF), color-stop(100%,#000099)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #0000FF 0%,#000099 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #0000FF 0%,#000099 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #0000FF 0%,#000099 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #0000FF 0%,#000099 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0000FF', endColorstr='#000099',GradientType=0 ); /* IE6-9 */
+}
+
+div.login div.head
+{
+    border-top-left-radius:15px;
+    border-top-right-radius:15px;
+    margin-top:0px;
+    color:black;
+    width:100%;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#00b6ff+0,0026ff+100 */
+    background: #00b6ff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #0000FF 0%, #000099 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0000FF), color-stop(100%,#000099)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #0000FF 0%,#000099 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #0000FF 0%,#000099 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #0000FF 0%,#000099 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #0000FF 0%,#000099 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0000FF', endColorstr='#000099',GradientType=0 ); /* IE6-9 */
+}
+
+button
+{
+    border-radius:5px;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+input
+{
+    border-radius:5px;
+}
+
+div.login
+{
+    margin:auto;
+    background-color:#252525;
+    border-radius: 15px;
+    width:25%;
+    padding: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    text-align:center;
+    color:white;
+}
+

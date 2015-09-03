@@ -1,12 +1,13 @@
 <head>
-  <style type="text/css">
-
-  </style>
+  <link rel="stylesheet" href="<?php echo base_url('/application/styles.css')?>"/>
 </head>
-
+<div class = "navbar">
 <h1>1764 Attendance</h1>
-
-<div>
+</div>
+<div class = "login">
+<div class = "head">
+<h1>Login</h1>
+</div>
 <?php
     if(!$clockdata['first_flag'])
     {
@@ -46,12 +47,11 @@
         );
 
     ?>
-    <div>
     <?php
     echo form_input($data,'','');
-    echo "<br><button type='submit' class ='btn'>Clock In</button>";
+    echo "<button type='submit' class ='btn'>Clock In</button>";
     echo form_close();
-
+    echo "<div>";
 
     echo form_open('users/create_user','');
     echo "<button type = 'submit' class = 'btn'>Register</button";
