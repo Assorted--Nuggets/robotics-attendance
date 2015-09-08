@@ -149,11 +149,22 @@
           'user_id' => $id,
           'event_id' => $event_id,
           'time_stamp' => date('Y-m-d H:i:s'),
-          'clock_in' => TRUE
+          'clock_in' => TRUE,
+        );
+
+	$return_data = array(
+            'clock_in' => TRUE,
+            'total' => NULL,
+            'temp' => NULL,
+            'is_forgot' => FALSE,
+            'is_first' => FALSE,
+            'first_name' => $this->get_name($pin_number),
+            'first_flag' => TRUE,
+            'exists' => $this->user_exists($pin_number)
         );
         $return_first = TRUE;
         $this->db->insert('clocks', $data);
-        return;
+        return $return_data;
       }
       $result = $clock_array[$size-1];
       $data = array(
@@ -192,12 +203,17 @@
 
           return $return_data;
         }
+        
         //Display how long the user has been signed in
 	$return_temp_time=$current->diff($time)->format('%H hours %i minutes %s seconds');
         $totalTime = new DateTime("0-0-0 0:0:0");
-        for($i = 1; $i < $size; ++$i)
+        error_log("Clock Array " . var_export($clock_array, true));
+	error_log("Before for loop - Database Model Size " . var_export($size, true));
+	for($i = 1; $i < $size; $i++)
         {
-          $row = $clock_array[$i];
+		error_log("In the for loop - database model ln213 - " . $i );
+          echo "Test";
+	  $row = $clock_array[$i];
           $row2 = $clock_array[$i - 1];
           if($row['clock_in'] == FALSE)
           {
@@ -208,8 +224,9 @@
           }
         }
         $totalTime->add($current->diff($time));
-
+        
         $return_total_time = $totalTime->format('H:i:s');
+	$data['clock_in'] = FALSE;
       }
 
       $return_data = array(

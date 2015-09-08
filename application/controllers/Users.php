@@ -20,7 +20,6 @@
     {
       $password = $this->input->post('clock_password');
       $this->load->helper('form');
-      $testarr = $this->database->test_array();
       $clockdata = $this->database->authenticate_clock($password);
       $clockdata['first_flag'] = $first;
       $data['clockdata'] = $clockdata;
