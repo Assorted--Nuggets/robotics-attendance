@@ -53,3 +53,4 @@ $route['default_controller'] = 'users';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['register'] = 'users/create_user';
+$route['authenticate'] = 'users/auth_clock';

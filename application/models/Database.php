@@ -1,4 +1,5 @@
 <?php
+
   class Database extends CI_Model
   {
     public function __construct()
@@ -6,7 +7,10 @@
       date_default_timezone_set("America/Chicago");
       $this->load->database();
     }
+    
 
+############################ USER FUNCTIONS ####################################
+    
     public function get_user($id = FALSE)
     {
       if($id === FALSE)
@@ -44,11 +48,23 @@
         'first_name' => $first_name,
         'last_name' => $last_name,
         'pin_number' => $pin_number,
-        'is_admin' => false
+        'is_admin' => false,
+	'total_time' => "00-00-0000 00:00:00"
       );
 
       $this->db->insert('users', $data);
     }
+
+    public function set_total_time($id, $time)
+    {
+      $data = array(
+        'total_time' => $time
+      );
+
+      $this->db->where('id', $id);
+      $this->db->update('users', $data);
+    }
+
     //Delete User from Database
     public function rm_user($id)
     {
@@ -65,7 +81,40 @@
       $this->db->where('last_name', $last_name);
       $this->db->update('users', $data);
     }
+    
+    public function sort_users()
+    {
+      $users = $this->get_user();
+      
+      for($i = 0; $i < count($users); $i++)
+      {
+        $min = $i;
+        $min_user = $users[$min]; 
 
+        for($j = $i + 1; $j < count($users); $j++)
+        {
+          $current_time = new DateTime($users[$j]['total_time']);
+          $current = $current_time->getTimestamp();
+          $min_dt = new DateTime($min_user['total_time']);
+          $min_time = $min_dt->getTimestamp();
+
+          if($current < $min_time)
+          {
+            $min = $j;
+          }
+        }
+        if($min != $i)
+        {
+          $temp = $users[$min];
+          $users[$min] = $users[$i];
+          $users[$i] = $temp;
+        }
+      }
+      return $users;
+    }
+########################## END USER FUNCTIONS ##################################
+
+#########################   EVENT FUNCTIONS   ##################################
     public function add_event()
     {
       if($this->is_admin($this->session->userdata('pin_number')))
@@ -98,6 +147,10 @@
       return $query->row_array();
     }
 
+####################    END EVENT FUNCTIONS   #################################
+
+####################    CLOCK IN FUNCTIONS    #################################
+
     //Has the user already clocked in?
     public function is_clock_in($id)
     {
@@ -126,6 +179,22 @@
 
     public function clock_in($pin_number)
     {
+      if(!$this->user_exists($pin_number))
+      {
+        $return_data = array(
+	    'clock_in' => FALSE,
+	    'total' => NULL,
+	    'temp' => NULL,
+	    'is_forgot' => FALSE,
+	    'is_first' =>FALSE,
+	    'first_name' => NULL,
+	    'first_flag' => TRUE,
+	    'exists' => FALSE
+     	);
+	
+ 	return $return_data;
+      }
+      
       // Used to get user id
       $query = $this->db->get_where('users', array('pin_number' => $pin_number));
       $id = $query->row_array()['id'];
@@ -180,7 +249,7 @@
         $time = new DateTime($result['time_stamp']);
         //Store the current time
         $current = new DateTime(date('Y-m-d H:i:s'));
-        $difference = $current->diff($time);
+        $difference = $time->diff($current);
 
         $time_a = strtotime($result['time_stamp']);
         $time_b = strtotime(date('Y-m-d H:i:s'));
@@ -206,27 +275,29 @@
         
         //Display how long the user has been signed in
 	$return_temp_time=$current->diff($time)->format('%H hours %i minutes %s seconds');
-        $totalTime = new DateTime("0-0-0 0:0:0");
+        $totalTime = new DateTime('00-00-0000 00:00:00');
+	$totalTime = $totalTime->add($difference);
         error_log("Clock Array " . var_export($clock_array, true));
 	error_log("Before for loop - Database Model Size " . var_export($size, true));
-	for($i = 1; $i < $size; $i++)
-        {
-		error_log("In the for loop - database model ln213 - " . $i );
-          echo "Test";
-	  $row = $clock_array[$i];
-          $row2 = $clock_array[$i - 1];
-          if($row['clock_in'] == FALSE)
-          {
-            $time_stamp = new DateTime($row['time_stamp']);
-            $last_time = new DateTime($row2['time_stamp']);
-            $delta =$last_time->diff($time_stamp);
-            $totalTime->add($delta);
-          }
-        }
-        $totalTime->add($current->diff($time));
+	if($size > 1)
+	{
+            for($i = 1; $i < $size; $i++)
+            {
+	        error_log("In the for loop - database model ln213 - " . $i );
+	        $row = $clock_array[$i];
+                $row2 = $clock_array[$i - 1];
+                if($row['clock_in'] == FALSE)
+                {
+                    $time_stamp = new DateTime($row['time_stamp']);
+                    $last_time = new DateTime($row2['time_stamp']);
+                    $delta =$last_time->diff($time_stamp);
+                    $totalTime->add($delta);
+                }
+            }
+	}
         
         $return_total_time = $totalTime->format('H:i:s');
-	$data['clock_in'] = FALSE;
+        $data['clock_in'] = FALSE;
       }
 
       $return_data = array(
@@ -239,16 +310,13 @@
         'first_flag' => FALSE,
         'exists' => $this->user_exists($pin_number)
       );
+      $this->set_total_time($id, "0000-00-00 ".$return_total_time);
       $this->db->insert('clocks', $data);
       return $return_data;
     }
 
-    public function test_array()
-    {
-      $return_data = array('test' => "REEEE");
-      return $return_data;
-    }
-
+#################### END CLOCK FUNCTIONS #############################################
+    
     public function is_admin($pin_number)
     {
       $query = $this->db->get_where('users', array('pin_number' => $pin_number));

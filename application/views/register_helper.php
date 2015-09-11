@@ -1,3 +1,13 @@
+<link rel="stylesheet" href="<?php echo base_url('/application/styles.css')?>"/>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Orbitron">
+<div class = "navbar">
+	<h1>1764 Attendance</h1>
+</div>
+
+<div class = "login">
+	<div class = "head">
+		<h1>Register</h1>
+	</div>
 <?php
     echo form_open('users/create_user','');
     $firstname = array(
@@ -29,7 +39,9 @@
     echo form_input($pin_number,'','');
     echo form_input($submit,'','');
     echo form_close();
-    echo form_open('users','');
+    echo form_open(base_url(),'');
     echo "<button type = 'submit' class = 'btn'>Back to Login</button";
     echo form_close();
 ?>
+
+</div>

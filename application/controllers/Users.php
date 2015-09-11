@@ -18,7 +18,7 @@
 
     public function auth_clock($first = FALSE)
     {
-      $password = $this->input->post('clock_password');
+      $password = sha1($this->input->post('clock_password'));
       $this->load->helper('form');
       $clockdata = $this->database->authenticate_clock($password);
       $clockdata['first_flag'] = $first;
@@ -30,7 +30,7 @@
     {
       $first_name = $this->input->post('first_name');
       $last_name = $this->input->post('last_name');
-      $pin_number = $this->input->post('clock_password');
+      $pin_number = sha1($this->input->post('clock_password'));
       $this->load->helper('form');
       $this->load->view('register_helper');
       if($first_name != null && $last_name != null && $pin_number != null)
@@ -42,15 +42,17 @@
 
     public function admin_login()
     {
-      $password = $this->input->post('password');
+      $password = sha1($this->input->post('password'));
       $this->load->helper('form');
       $this->load->view('login_helper');
       $this->database->admin_login($password);
     }
 
-    public function view($id)
+    public function view()
     {
-      $data['users'] = $this->database->get_user($id);
+      $data['users'] = $this->database->sort_users();
+      $this->load->helper('form');
+      $this->load->view('users_view', $data);
     }
   }
 ?>
