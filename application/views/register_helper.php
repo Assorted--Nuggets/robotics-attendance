@@ -8,7 +8,18 @@
 	<div class = "head">
 		<h1>Register</h1>
 	</div>
+<h3>DO NOT PUT 'Lps' IN YOUR PASSWORD</h3>
 <?php
+    if($regdata['success'] == TRUE)
+    {
+      echo "User Created<br>";
+      echo "You have been automatically signed in";
+    }
+    else if($regdata['exists'] == TRUE)
+    {
+      echo "User already exists; Contact Max Dowling";
+    }
+    
     echo form_open('users/create_user','');
     $firstname = array(
         'name' => 'first_name',

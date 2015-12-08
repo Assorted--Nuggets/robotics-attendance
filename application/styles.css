@@ -7,19 +7,48 @@ body
 
 form
 {
-    width:50%;
+    width:100%;
     margin:auto;
 }
+
+form.usr
+{
+    margin:0px;
+}
+
+h2
+{
+    width:25%;
+    display:block;
+    float: left;
+}
+
 button
 {
-    width:100%;
+    width:50%;
     margin:auto;
     height:30px;
 }
 
+button.usr
+{
+    width:50%;
+}
+input.usr
+{
+    width:25%;
+    height:30px;
+    margin-top:5px;
+    margin-bottom:5px;
+    margin-left:0px;
+    margin-right:0px;
+    padding:0px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
 input
 {
-    width:100%;
+    width:50%;
     height:30px;
     margin-top:5px;
     margin-bottom:5px;
@@ -87,6 +116,11 @@ input
     margin-bottom:5px;
 }
 
+table tr td th tbody
+{
+    display:table;
+    border:5px;
+}
 
 div.login
 {
@@ -102,3 +136,13 @@ div.login
     color:white;
 }
 
+div.table
+{
+    display:table;
+    width:100%;
+}
+
+span.td
+{
+    display:table-cell;
+}

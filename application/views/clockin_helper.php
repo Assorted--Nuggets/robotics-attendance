@@ -51,13 +51,16 @@
     ?>
     <?php
     echo form_input($data,'','');
-    echo "<button type='submit' class ='btn'>Clock In</button>";
+    echo "<button type='submit' class ='btn'>Clock In/Out</button>";
     echo form_close();
 
     echo form_open('register','');
     echo "<button type = 'submit' class = 'btn'>Register</button>";
     echo form_close();
     
+    echo form_open('adminpage','');
+    echo "<button type = 'submit' class = 'btn'>Admin</button>";
+    echo form_close();
     //where was this picture taken?
 ?>
     </div>
